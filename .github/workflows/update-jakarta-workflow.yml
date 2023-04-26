@@ -10,15 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        - with:
+            ref: jakarta
 
-      - name: Make changes to pull request
-        run: date +%s > report.txt
+      - name: Reset promotion branch
+          run: |
+            git fetch origin master:master
+            git reset --hard master
 
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
-          base: jakarta
           token: ${{ secrets.WORKFLOW_TOKEN }}
           commit-message: ${{ github.event.head_commit.message }}
           title: ${{ github.event.head_commit.message }}
