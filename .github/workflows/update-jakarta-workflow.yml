@@ -14,9 +14,9 @@ jobs:
           ref: jakarta
 
       - name: Reset promotion branch
-          run: |
-            git fetch origin master:master
-            git reset --hard master
+        run: |
+          git fetch origin master:master
+          git reset --hard master
 
       - name: Create Pull Request
         id: cpr
