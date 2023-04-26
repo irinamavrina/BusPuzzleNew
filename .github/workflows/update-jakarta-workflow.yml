@@ -1,0 +1,25 @@
+name: Update jakarta branch
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  createPullRequest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Make changes to pull request
+        run: date +%s > report.txt
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          base: jakarta
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+          commit-message: ${{ github.event.head_commit.message }}
+          title: ${{ github.event.head_commit.message }}
+          branch: jakarta-test
