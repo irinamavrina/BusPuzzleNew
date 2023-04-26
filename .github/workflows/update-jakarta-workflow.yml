@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        - with:
-            ref: jakarta
+        with:
+          ref: jakarta
 
       - name: Reset promotion branch
           run: |
