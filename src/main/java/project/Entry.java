@@ -1,13 +1,16 @@
 package project;
 
-import java.joda.LocalTime;
+import javax.xml.bind.annotation.XmlElement;
+import java.time.LocalTime;
 import java.util.*;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class Entry {
-	private LocalTime departureTime;////
-	private LocalTime arrivalTime;//////
+	@XmlElement
+	private final String graphicsStates = "";
+	private LocalTime departureTime;
+	private LocalTime arrivalTime;
 	private String busCompany;
 	private static final int MINUTES_IN_DAY = 1440;
 

@@ -3,6 +3,8 @@ name: PR QA
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  branches:
+    - master
 
 jobs:
   build:
