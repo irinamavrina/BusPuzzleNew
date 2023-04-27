@@ -7,7 +7,7 @@ import java.util.*;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class Entry {///
-	@XmlElement//
+	@XmlElement
 	private final String graphicsStates = "hi";
 	private LocalTime departureTime;
 	private LocalTime arrivalTime;
