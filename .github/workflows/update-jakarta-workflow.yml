@@ -33,5 +33,5 @@ jobs:
           git merge ${{ steps.branch_name.outputs.branch_name }} --no-commit --no-ff
           git commit -m "Merge ${{ steps.branch_name.outputs.branch_name }} into jakarta"
           git push origin jakarta
-      - name: Delete new branch
-        run: git branch -d ${{ steps.branch_name.outputs.branch_name }}
+#      - name: Delete new branch
+#        run: git branch -d ${{ steps.branch_name.outputs.branch_name }}
