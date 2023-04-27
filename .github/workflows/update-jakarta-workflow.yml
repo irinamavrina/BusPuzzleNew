@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Generate new branch name
         run: |
           echo "::set-output name=branch_name::new-branch-$(date +%s)"
         id: branch_name
       - name: Fetch branch
-        run: git fetch origin jakarta2
+        run: git fetch origin jakarta2:jakarta2
       - name: Create new branch
         run: git checkout -b ${{ steps.branch_name.outputs.branch_name }} jakarta2
       - name: Add commit to new branch

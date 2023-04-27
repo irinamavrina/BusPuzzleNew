@@ -39,7 +39,7 @@ public class Entry {
 		LocalTime a2 = e.arrivalTime;
 
 		if (d1.equals(d2) && a1.equals(a2)) {
-			if (this.busCompany.equals("Posh!!!!!!!!!")) {
+			if (this.busCompany.equals("Posh")) {
 				return true;
 			}
 		}
