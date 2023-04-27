@@ -18,13 +18,13 @@ jobs:
           echo "::set-output name=branch_name::new-branch-$(date +%s)"
         id: branch_name
       - name: Fetch branch
-        run: git fetch origin jakarta:jakarta
+        run: git fetch origin jakarta:jakarta master:master
       - name: Create new branch
         run: git checkout -b ${{ steps.branch_name.outputs.branch_name }} jakarta
       - name: Push new branch
         run: git push origin ${{ steps.branch_name.outputs.branch_name }}
       - name: Add commit to new branch
-        run: git cherry-pick ${{ github.sha }}
+        run: git reset --hard master
       - name: Build project
         run: mvn clean install
       - name: Merge branch into jakarta
