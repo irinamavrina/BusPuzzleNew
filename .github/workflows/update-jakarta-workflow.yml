@@ -18,22 +18,22 @@ jobs:
           echo "::set-output name=branch_name::new-branch-$(date +%s)"
         id: branch_name
       - name: Fetch branch
-        run: git fetch origin jakarta2:jakarta2
+        run: git fetch origin jakarta:jakarta
       - name: Create new branch
-        run: git checkout -b ${{ steps.branch_name.outputs.branch_name }} jakarta2
+        run: git checkout -b ${{ steps.branch_name.outputs.branch_name }} jakarta
       - name: Push new branch
         run: git push origin ${{ steps.branch_name.outputs.branch_name }}
       - name: Add commit to new branch
         run: git cherry-pick ${{ github.sha }}
       - name: Build project
         run: mvn clean install
-      - name: Merge branch into jakarta2
+      - name: Merge branch into jakarta
         if: success()
         run: |
           git push origin ${{ steps.branch_name.outputs.branch_name }}
-          git checkout jakarta2
+          git checkout jakarta
           git merge ${{ steps.branch_name.outputs.branch_name }} --no-commit --no-ff
-          git commit -m "Merge ${{ steps.branch_name.outputs.branch_name }} into jakarta2"
-          git push origin jakarta2
+          git commit -m "Merge ${{ steps.branch_name.outputs.branch_name }} into jakarta"
+          git push origin jakarta
       - name: Delete new branch
         run: git branch -d ${{ steps.branch_name.outputs.branch_name }}
