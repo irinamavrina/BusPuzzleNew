@@ -4,25 +4,32 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '.github/workflows/**'
 
 jobs:
-  createPullRequest:
+  build-and-merge:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: jakarta
-
-      - name: Reset promotion branch
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Generate new branch name
         run: |
-          git fetch origin master:master
-          git reset --hard master
-
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.WORKFLOW_TOKEN }}
-          commit-message: ${{ github.event.head_commit.message }}
-          title: ${{ github.event.head_commit.message }}
-          branch: jakarta-test
+          echo "::set-output name=branch_name::new-branch-$(date +%s)"
+        id: branch_name
+      - name: Create new branch
+        run: git checkout -b ${{ steps.branch_name.outputs.branch_name }} jakarta2
+      - name: Add commit to new branch
+        run: git cherry-pick ${{ github.sha }}
+      - name: Build project
+        run: mvn clean install
+      - name: Merge branch into jakarta2
+        if: success()
+        run: |
+          git push origin ${{ steps.branch_name.outputs.branch_name }}
+          git checkout jakarta2
+          git merge ${{ steps.branch_name.outputs.branch_name }} --no-commit --no-ff
+          git commit -m "Merge ${{ steps.branch_name.outputs.branch_name }} into jakarta2"
+          git push origin jakarta2
+      - name: Delete new branch
+        run: git branch -d ${{ steps.branch_name.outputs.branch_name }}
