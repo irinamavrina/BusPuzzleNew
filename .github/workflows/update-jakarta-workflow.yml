@@ -21,6 +21,8 @@ jobs:
         run: git fetch origin jakarta2:jakarta2
       - name: Create new branch
         run: git checkout -b ${{ steps.branch_name.outputs.branch_name }} jakarta2
+      - name: Push new branch
+        run: git push origin ${{ steps.branch_name.outputs.branch_name }}
       - name: Add commit to new branch
         run: git cherry-pick ${{ github.sha }}
       - name: Build project
