@@ -21,12 +21,12 @@ jobs:
         run: git fetch origin jakarta:jakarta master
       - name: Create new branch
         run: git checkout -b ${{ steps.branch_name.outputs.branch_name }} jakarta
-      - name: Push new branch
-        run: git push origin ${{ steps.branch_name.outputs.branch_name }}
       - name: Add commit to new branch
         run: git reset --hard origin/master
       - name: Build project
         run: mvn clean install
+      - name: Push new branch
+        run: git push origin ${{ steps.branch_name.outputs.branch_name }}
       - name: Merge branch into jakarta
         if: success()
         run: |
