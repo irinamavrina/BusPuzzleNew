@@ -18,13 +18,11 @@ jobs:
           ref: master
       - name: Generate new branch name
         id: new-branch-name
-        run: |
-          echo "branch_name=new-branch-$(date +%s)" >> "$GITHUB_OUTPUT"
+        run: echo "branch_name=new-branch-$(date +%s)" >> "$GITHUB_OUTPUT"
       - name: Fetch jakarta branch
         run: git fetch origin jakarta:jakarta
-      - name: Create new branch
-        run: |
-          git checkout -b ${{ steps.new-branch-name.outputs.branch_name }} jakarta
+      - name: Checkout new branch
+        run: git checkout -b ${{ steps.new-branch-name.outputs.branch_name }} jakarta
 #          git push --set-upstream origin ${{ steps.new-branch-name.outputs.branch_name }}
 #      - name: Checkout new branch
 #        uses: actions/checkout@v3
