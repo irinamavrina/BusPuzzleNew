@@ -20,17 +20,17 @@ jobs:
         id: new-branch-name
         run: |
           echo "branch_name=new-branch-$(date +%s)" >> "$GITHUB_OUTPUT"
-      - name: Fetch branch
+      - name: Fetch jakarta branch
         run: git fetch origin jakarta:jakarta
       - name: Create new branch
         run: |
-          git branch ${{ steps.new-branch-name.outputs.branch_name }} jakarta
-          git push --set-upstream origin ${{ steps.new-branch-name.outputs.branch_name }}
-      - name: Checkout new branch
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: ${{ steps.new-branch-name.outputs.branch_name }}
+          git checkout -b ${{ steps.new-branch-name.outputs.branch_name }} jakarta
+#          git push --set-upstream origin ${{ steps.new-branch-name.outputs.branch_name }}
+#      - name: Checkout new branch
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#          ref: ${{ steps.new-branch-name.outputs.branch_name }}
       - name: Configure user name
         run: git config user.name "Git User"
       - name: Add commit to new branch
