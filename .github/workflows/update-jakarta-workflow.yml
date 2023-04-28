@@ -17,7 +17,7 @@ jobs:
           ref: master
       - name: Generate new branch name
         run: |
-          echo "::branch_name=new-branch-$(date +%s)" >> $GITHUB_OUTPUT
+          echo "branch_name=new-branch-$(date +%s)" >> $GITHUB_OUTPUT
       - name: Fetch branch
         run: git fetch origin jakarta:jakarta master
       - name: Create new branch
