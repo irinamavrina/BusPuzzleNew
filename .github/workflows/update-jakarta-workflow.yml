@@ -31,6 +31,8 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ steps.new-branch-name.outputs.branch_name }}
+      - name: Configure user name
+        run: git config user.name "Git User"
       - name: Add commit to new branch
         run: git cherry-pick ${{ github.sha }}
       - name: Build project
