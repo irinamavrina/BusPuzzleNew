@@ -32,7 +32,7 @@ jobs:
       - name: Configure user name
         run: git config user.name "Git User"
       - name: Add commit to new branch
-        run: git cherry-pick --m 1 ${{ github.sha }}
+        run: git cherry-pick -m 1 ${{ github.sha }}
       - name: Build project
         run: mvn clean install
       - name: Merge branch into jakarta
