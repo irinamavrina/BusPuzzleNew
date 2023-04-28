@@ -25,7 +25,7 @@ public class Entry {///
 			return MINUTES.between(this.departureTime, this.arrivalTime);
 		}
 		return MINUTES.between(this.departureTime, this.arrivalTime) + MINUTES_IN_DAY;
-///
+
 	}
 
 	public boolean pastMidnight() {
