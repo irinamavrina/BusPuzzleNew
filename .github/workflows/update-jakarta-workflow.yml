@@ -22,13 +22,15 @@ jobs:
       - name: Fetch branch
         run: git fetch origin jakarta:jakarta master
       - name: Create new branch
-        run: git branch ${{ steps.new-branch-name.outputs.branch_name }} jakarta
+        run: |
+          git branch ${{ steps.new-branch-name.outputs.branch_name }} jakarta
+          git push --set-upstream origin ${{ steps.new-branch-name.outputs.branch_name }}
       - name: Checkout new branch
         uses: actions/checkout@v3
         with:
            ref: ${{ steps.new-branch-name.outputs.branch_name }}
       - name: Add commit to new branch
-        run: git reset --hard origin/master
+        run: git cherry-pick ${{ github.sha }}
       - name: Build project
         run: mvn clean install
       - name: Merge branch into jakarta
