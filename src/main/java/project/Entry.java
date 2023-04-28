@@ -23,7 +23,7 @@ public class Entry {///
 	public long routeTime() {//
 		if (!this.pastMidnight()) {//
 			return MINUTES.between(this.departureTime, this.arrivalTime);//
-		}
+		}/////////
 		return MINUTES.between(this.departureTime, this.arrivalTime) + MINUTES_IN_DAY;
 
 	}
