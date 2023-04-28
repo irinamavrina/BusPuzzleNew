@@ -11,7 +11,7 @@ public class Entry {///
 	private final String graphicsStates = "hi!!!";
 	private LocalTime departureTime;
 	private LocalTime arrivalTime;
-	private String busCompany;////////
+	private String busCompany;
 	private static final int MINUTES_IN_DAY = 1440;
 
 	public Entry(LocalTime departureTime, LocalTime arrivalTime, String busCompany) {
