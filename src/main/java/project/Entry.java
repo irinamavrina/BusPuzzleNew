@@ -43,7 +43,7 @@ public class Entry {///
 				return true;
 			}
 		}//pr-master
-		if (d1.equals(d2) && this.routeTime() < e.routeTime()) {/////////
+		if (d1.equals(d2) && this.routeTime() < e.routeTime()) {
 			return true;
 		}
 		if (a1.equals(a2) && this.routeTime() < e.routeTime()) {
