@@ -13,14 +13,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          ref: master
       - name: Generate new branch name
         run: |
-          echo "::set-output name=branch_name::new-branch-$(date +%s)"
-        id: branch_name
+          echo "::branch_name=new-branch-$(date +%s)" >> $GITHUB_OUTPUT
       - name: Fetch branch
         run: git fetch origin jakarta:jakarta master
       - name: Create new branch
-        run: git checkout -b ${{ steps.branch_name.outputs.branch_name }} jakarta
+        run: git branch ${{ env.branch_name }} jakarta
+      - name: Checkout new branch
+        uses: actions/checkout@v3
+        with:
+           ref: ${{ env.branch_name }}
       - name: Add commit to new branch
         run: git reset --hard origin/master
       - name: Build project
@@ -28,9 +33,9 @@ jobs:
       - name: Merge branch into jakarta
         if: success()
         run: |
-          git push origin ${{ steps.branch_name.outputs.branch_name }}
+          git push origin ${{ env.branch_name }}
           git checkout jakarta
-          git merge ${{ steps.branch_name.outputs.branch_name }} --no-commit --no-ff
+          git merge ${{ env.branch_name }} --no-commit --no-ff
           git commit -m "Merge ${{ steps.branch_name.outputs.branch_name }} into jakarta"
           git push origin jakarta
 #      - name: Delete new branch
