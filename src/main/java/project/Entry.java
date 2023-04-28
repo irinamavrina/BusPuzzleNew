@@ -20,7 +20,7 @@ public class Entry {///
 		this.busCompany = busCompany;
 	}
 
-	public long routeTime() {//
+	public long routeTime() {
 		if (!this.pastMidnight()) {
 			return MINUTES.between(this.departureTime, this.arrivalTime);
 		}
