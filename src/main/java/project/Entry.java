@@ -24,7 +24,7 @@ public class Entry {///
 		if (!this.pastMidnight()) {//
 			return MINUTES.between(this.departureTime, this.arrivalTime);//
 		}/////////
-		return MINUTES.between(this.departureTime, this.arrivalTime) + MINUTES_IN_DAY;/////
+		return MINUTES.between(this.departureTime, this.arrivalTime) + MINUTES_IN_DAY;
 
 	}
 
