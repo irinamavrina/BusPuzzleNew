@@ -14,13 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
+          fetch-depth: 0
           ref: master
       - name: Generate new branch name
         id: new-branch-name
         run: |
           echo "branch_name=new-branch-$(date +%s)" >> "$GITHUB_OUTPUT"
       - name: Fetch branch
-        run: git fetch origin jakarta:jakarta master
+        run: git fetch origin jakarta:jakarta
       - name: Create new branch
         run: |
           git branch ${{ steps.new-branch-name.outputs.branch_name }} jakarta
@@ -28,7 +29,8 @@ jobs:
       - name: Checkout new branch
         uses: actions/checkout@v3
         with:
-           ref: ${{ steps.new-branch-name.outputs.branch_name }}
+          fetch-depth: 0
+          ref: ${{ steps.new-branch-name.outputs.branch_name }}
       - name: Add commit to new branch
         run: git cherry-pick ${{ github.sha }}
       - name: Build project
