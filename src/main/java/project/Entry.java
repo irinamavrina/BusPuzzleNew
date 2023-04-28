@@ -42,7 +42,7 @@ public class Entry {///
 			if (this.busCompany.equals("Posh")) {//
 				return true;
 			}
-		}//pr-master
+		}
 		if (d1.equals(d2) && this.routeTime() < e.routeTime()) {
 			return true;
 		}
