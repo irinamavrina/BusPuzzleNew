@@ -33,7 +33,7 @@ public class Entry {///
 	}//
 
 	public boolean isMoreEfficient(Entry e) {
-		LocalTime d1 = this.departureTime;
+		LocalTime d1 = this.departureTime;//
 		LocalTime d2 = e.departureTime;
 		LocalTime a1 = this.arrivalTime;
 		LocalTime a2 = e.arrivalTime;
