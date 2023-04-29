@@ -40,7 +40,7 @@ jobs:
         run: |
           git push origin ${{ steps.new-branch-name.outputs.branch_name }}
           git checkout jakarta
-          git merge ${{ steps.new-branch-name.outputs.branch_name }} --no-commit --no-ff
+          git merge ${{ steps.new-branch-name.outputs.branch_name }}
           git push origin jakarta
 #      - name: Delete new branch
 #        run: git branch -d ${{ steps.branch_name.outputs.branch_name }}
