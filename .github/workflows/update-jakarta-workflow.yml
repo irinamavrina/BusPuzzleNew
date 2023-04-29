@@ -1,46 +1,46 @@
-name: Update jakarta branch
-
-on:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - '.github/workflows/**'
-
-jobs:
-  build-and-merge:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: master
-      - name: Generate new branch name
-        id: new-branch-name
-        run: echo "branch_name=new-branch-$(date +%s)" >> "$GITHUB_OUTPUT"
-      - name: Fetch jakarta branch
-        run: git fetch origin jakarta:jakarta
-      - name: Checkout new branch
-        run: git checkout -b ${{ steps.new-branch-name.outputs.branch_name }} jakarta
-#          git push --set-upstream origin ${{ steps.new-branch-name.outputs.branch_name }}
-#      - name: Checkout new branch
+#name: Update jakarta branch
+#
+#on:
+#  push:
+#    branches:
+#      - master
+#    paths-ignore:
+#      - '.github/workflows/**'
+#
+#jobs:
+#  build-and-merge:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
 #        uses: actions/checkout@v3
 #        with:
 #          fetch-depth: 0
-#          ref: ${{ steps.new-branch-name.outputs.branch_name }}
-      - name: Configure user name
-        run: git config user.name "Git User"
-      - name: Add commit to new branch
-        run: git cherry-pick -m 1 ${{ github.sha }}
-      - name: Build project
-        run: mvn clean install
-      - name: Merge branch into jakarta
-        if: success()
-        run: |
-          git push origin ${{ steps.new-branch-name.outputs.branch_name }}
-          git checkout jakarta
-          git merge ${{ steps.new-branch-name.outputs.branch_name }}
-          git push origin jakarta
-#      - name: Delete new branch
-#        run: git branch -d ${{ steps.branch_name.outputs.branch_name }}
+#          ref: master
+#      - name: Generate new branch name
+#        id: new-branch-name
+#        run: echo "branch_name=new-branch-$(date +%s)" >> "$GITHUB_OUTPUT"
+#      - name: Fetch jakarta branch
+#        run: git fetch origin jakarta:jakarta
+#      - name: Checkout new branch
+#        run: git checkout -b ${{ steps.new-branch-name.outputs.branch_name }} jakarta
+##          git push --set-upstream origin ${{ steps.new-branch-name.outputs.branch_name }}
+##      - name: Checkout new branch
+##        uses: actions/checkout@v3
+##        with:
+##          fetch-depth: 0
+##          ref: ${{ steps.new-branch-name.outputs.branch_name }}
+#      - name: Configure user name
+#        run: git config user.name "Git User"
+#      - name: Add commit to new branch
+#        run: git cherry-pick -m 1 ${{ github.sha }}
+#      - name: Build project
+#        run: mvn clean install
+#      - name: Merge branch into jakarta
+#        if: success()
+#        run: |
+#          git push origin ${{ steps.new-branch-name.outputs.branch_name }}
+#          git checkout jakarta
+#          git merge ${{ steps.new-branch-name.outputs.branch_name }}
+#          git push origin jakarta
+##      - name: Delete new branch
+##        run: git branch -d ${{ steps.branch_name.outputs.branch_name }}
