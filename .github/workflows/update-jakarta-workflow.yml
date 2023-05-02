@@ -32,7 +32,9 @@ jobs:
           git fetch origin jakarta:jakarta
           git checkout -b test-branch jakarta
       - name: Configure user name
-        run: git config user.name "Git User"
+        run: |
+          git config user.name "Git User"
+          git config user.email "user@test.com"
       - name: Add commit to the test branch
         run: git cherry-pick -m 1 ${{ github.sha }}
       - name: Build project with Maven
@@ -56,7 +58,9 @@ jobs:
           git fetch origin jakarta:jakarta
           git checkout -b ${{ steps.new-branch-name.outputs.branch_name }} jakarta
       - name: Configure user name
-        run: git config user.name "Git User"
+        run: |
+          git config user.name "Git User"
+          git config user.email "user@temp.com"
       - name: Add commit to new branch
         run: git cherry-pick -m 1 ${{ github.sha }}
       - name: Merge branch into jakarta
@@ -72,7 +76,11 @@ jobs:
   send-notification:
     runs-on: ubuntu-latest
     needs: [checkout-and-build, merge]
-    if: always() && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'skipped'))
+    if: |
+      always() &&
+      (contains(needs.*.result, 'failure') ||
+      contains(needs.*.result, 'skipped') ||
+      contains(needs.*.result, 'cancelled'))
     steps:
       - name: Send notification if build or merge failed
         run: echo "hehe"
