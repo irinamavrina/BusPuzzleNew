@@ -8,8 +8,38 @@ on:
       - '.github/workflows/**'
 
 jobs:
-  build-and-merge:
+  checkout-and-build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java-version: [11, 16, 17]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: master
+      - name: JDK setup
+          uses: actions/setup-java@v2
+          with:
+            java-version: ${{ matrix.java-version }}
+      - name: Fetch jakarta branch and checkout
+        run: |
+          git fetch origin jakarta:jakarta
+          git checkout -b test-branch jakarta
+      - name: Configure user name
+        run: git config user.name "Git User"
+      - name: Add commit to the test branch
+        run: git cherry-pick -m 1 ${{ github.sha }}
+      - name: Build project with Maven
+        if: success()
+        run: mvn clean install
+
+  merge:
+    runs_on: ubuntu-latest
+    needs: checkout-and-build
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -19,22 +49,14 @@ jobs:
       - name: Generate new branch name
         id: new-branch-name
         run: echo "branch_name=new-branch-$(date +%s)" >> "$GITHUB_OUTPUT"
-      - name: Fetch jakarta branch
-        run: git fetch origin jakarta:jakarta
-      - name: Checkout new branch
-        run: git checkout -b ${{ steps.new-branch-name.outputs.branch_name }} jakarta
-#          git push --set-upstream origin ${{ steps.new-branch-name.outputs.branch_name }}
-#      - name: Checkout new branch
-#        uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 0
-#          ref: ${{ steps.new-branch-name.outputs.branch_name }}
+      - name: Fetch jakarta branch and checkout
+        run: |
+          git fetch origin jakarta:jakarta
+          git checkout -b ${{ steps.new-branch-name.outputs.branch_name }} jakarta
       - name: Configure user name
         run: git config user.name "Git User"
       - name: Add commit to new branch
         run: git cherry-pick -m 1 ${{ github.sha }}
-      - name: Build project
-        run: mvn clean install
       - name: Merge branch into jakarta
         if: success()
         run: |
@@ -42,5 +64,9 @@ jobs:
           git checkout jakarta
           git merge ${{ steps.new-branch-name.outputs.branch_name }}
           git push origin jakarta
-#      - name: Delete new branch
-#        run: git branch -d ${{ steps.branch_name.outputs.branch_name }}
+      - name: Delete new branch
+        run: git branch -d ${{ steps.branch_name.outputs.branch_name }}
+
+      - name: Send notification if build or merge failed
+        if: cancelled() || failure()
+        run: echo "hehe"
