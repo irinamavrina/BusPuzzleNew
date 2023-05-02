@@ -22,9 +22,9 @@ jobs:
           fetch-depth: 0
           ref: master
       - name: JDK setup
-          uses: actions/setup-java@v2
-          with:
-            java-version: ${{ matrix.java-version }}
+        uses: actions/setup-java@v2
+        with:
+          java-version: ${{ matrix.java-version }}
       - name: Fetch jakarta branch and checkout
         run: |
           git fetch origin jakarta:jakarta
