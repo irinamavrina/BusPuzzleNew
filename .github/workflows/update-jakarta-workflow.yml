@@ -22,9 +22,11 @@ jobs:
           fetch-depth: 0
           ref: master
       - name: JDK setup
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java-version }}
+          distribution: 'temurin'
+          cache: maven
       - name: Fetch jakarta branch and checkout
         run: |
           git fetch origin jakarta:jakarta
@@ -35,7 +37,7 @@ jobs:
         run: git cherry-pick -m 1 ${{ github.sha }}
       - name: Build project with Maven
         if: success()
-        run: mvn clean install
+        run: mvn --batch-mode --update-snapshots verify
 
   merge:
     runs-on: ubuntu-latest
